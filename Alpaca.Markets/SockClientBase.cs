@@ -26,7 +26,7 @@ namespace Alpaca.Markets
             _webSocket = webSocketFactory.CreateWebSocket(endpointUri.Uri);
 
             _webSocket.Opened += OnOpened;
-            _webSocket.Closed += OnClosed;
+            _webSocket.Closed += HandleClosed;
 
             _webSocket.MessageReceived += OnMessageReceived;
             _webSocket.DataReceived += OnDataReceived;
@@ -39,6 +39,10 @@ namespace Alpaca.Markets
         /// </summary>
         public event Action<Exception> OnError;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public event Action<string> OnClose;
         /// <summary>
         /// Opens connection to a streaming API.
         /// </summary>
@@ -68,8 +72,9 @@ namespace Alpaca.Markets
         /// <summary>
         /// Handles <see cref="IWebSocket.Closed"/> event.
         /// </summary>
-        protected virtual void OnClosed()
+        protected virtual void HandleClosed()
         {
+            OnClose?.Invoke("Websocket connection has been closed");
         }
 
         /// <summary>
@@ -104,7 +109,7 @@ namespace Alpaca.Markets
             }
 
             _webSocket.Opened -= OnOpened;
-            _webSocket.Closed -= OnClosed;
+            _webSocket.Closed -= HandleClosed;
 
             _webSocket.MessageReceived -= OnMessageReceived;
             _webSocket.DataReceived -= OnDataReceived;

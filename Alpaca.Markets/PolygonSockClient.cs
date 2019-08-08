@@ -20,6 +20,7 @@ namespace Alpaca.Markets
         private const String MinuteAggChannel = "AM";
 
         private const String SecondAggChannel = "A";
+        private const String Status = "status";
 
         // ReSharper restore InconsistentNaming
 
@@ -184,7 +185,10 @@ namespace Alpaca.Markets
                         case SecondAggChannel:
                             SecondAggReceived?.Invoke(root.ToObject<JsonStreamAgg>());
                             break;
-
+                        case Status:
+                            var status = root.ToObject<JsonStreamStatus>();
+                            Console.WriteLine($"{status.Status} - {status.Message}");
+                            break;
                         default:
                             HandleError(new InvalidOperationException(
                                 $"Unexpected message type '{stream}' received."));

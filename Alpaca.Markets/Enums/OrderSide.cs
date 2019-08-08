@@ -20,6 +20,13 @@ namespace Alpaca.Markets
         /// Sell order.
         /// </summary>
         [EnumMember(Value = "sell")]
-        Sell
+        Sell,
+
+        /// <summary>
+        /// Short Sell order.
+        /// </summary>
+        [EnumMember(Value = "sell_short")]
+        SellShort
+
     }
 }

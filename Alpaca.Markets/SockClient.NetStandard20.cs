@@ -17,8 +17,7 @@ namespace Alpaca.Markets
             : this(
                 configuration["keyId"],
                 configuration["secretKey"],
-                configuration["alpacaRestApi"],
-                webSocketFactory)
+                configuration["alpacaRestApi"])
         {
         }
     }
