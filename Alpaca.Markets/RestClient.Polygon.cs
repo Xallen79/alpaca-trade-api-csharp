@@ -23,7 +23,46 @@ namespace Alpaca.Markets
             return getObjectsListAsync<IExchange, JsonExchange>(
                 _polygonHttpClient, FakeThrottler.Instance, builder);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        public async Task<bool> IsPrimaryShare(string symbol)
+        {
+            var companyEndPoint = $"v1/meta/symbols/{symbol}/company";
+            var financialEndPoint = $"v2/reference/financials/{symbol}";
 
+            var builder = new UriBuilder(_polygonHttpClient.BaseAddress)
+            {
+                Path = companyEndPoint,
+                Query = getDefaultPolygonApiQueryBuilder()
+            };
+            var result = false;
+            try
+            {
+                var company = await getSingleObjectAsync<ICompany, JsonCompany>(_polygonHttpClient, FakeThrottler.Instance, builder);
+                if(
+                    (company.Country.Equals("usa", StringComparison.CurrentCultureIgnoreCase) ||
+                    company.Country.Equals("us", StringComparison.CurrentCultureIgnoreCase)) &&
+                    company.MarketCap > 0
+                )
+                {
+                    builder = new UriBuilder(_polygonHttpClient.BaseAddress)
+                    {
+                        Path = financialEndPoint,
+                        Query = getDefaultPolygonApiQueryBuilder()
+                    };
+                    var fin = await getSingleObjectAsync<IFinancials, JsonFinancials>(_polygonHttpClient, FakeThrottler.Instance, builder);
+                    result = fin.Results.Count() > 0;
+                }
+            }
+            catch(Exception)
+            {
+                //Console.Error.WriteLine($"{symbol} - {e.Message}");
+            }
+            return result;
+        }
         /// <summary>
         /// Gets mapping dictionary for symbol types from Polygon REST API endpoint.
         /// </summary>
@@ -225,7 +264,31 @@ namespace Alpaca.Markets
                     JsonHistoricalItems<IAgg, JsonMinuteAgg>>(
                 _polygonHttpClient, FakeThrottler.Instance, builder);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dateFromInclusive"></param>
+        /// <param name="unadjusted"></param>
+        /// <returns></returns>
+        public Task<IHistoricalGroupedAgg> ListGroupedAggregatesAsync(            
+            DateTime dateFromInclusive,
+            Boolean unadjusted = false)
+        {
+            var unixFrom = dateFromInclusive.ToString("yyyy-MM-dd");
 
+
+            var builder = new UriBuilder(_polygonHttpClient.BaseAddress)
+            {
+                Path = $"/v2/aggs/grouped/locale/us/market/stocks/{unixFrom}",
+                Query = getDefaultPolygonApiQueryBuilder()
+                    .AddParameter("unadjusted", unadjusted.ToString())
+            };
+
+            return getSingleObjectAsync
+                <IHistoricalGroupedAgg,
+                    JsonHistoricalGroupedAgg>(
+                _polygonHttpClient, FakeThrottler.Instance, builder);
+        }
         /// <summary>
         /// Gets last trade for singe asset from Polygon REST API endpoint.
         /// </summary>
@@ -259,6 +322,21 @@ namespace Alpaca.Markets
             };
 
             return getSingleObjectAsync<ILastQuote, JsonLastQuote>(
+                _polygonHttpClient, FakeThrottler.Instance, builder);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Task<ITickers> GetAllTickers()
+        {
+            var builder = new UriBuilder(_polygonHttpClient.BaseAddress)
+            {
+                Path = $"v2/snapshot/locale/us/markets/stocks/tickers",
+                Query = getDefaultPolygonApiQueryBuilder()
+            };
+
+            return getSingleObjectAsync<ITickers, JsonTickers>(
                 _polygonHttpClient, FakeThrottler.Instance, builder);
         }
 
