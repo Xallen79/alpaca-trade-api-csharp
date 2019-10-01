@@ -34,7 +34,11 @@ namespace Alpaca.Markets
         /// <param name="message"></param>
         void Send(
             String message);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        bool IsConnected();
         /// <summary>
         /// Occurred after successful web socket connection (at protocol level).
         /// </summary>

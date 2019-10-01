@@ -97,6 +97,14 @@ namespace Alpaca.Markets
                 Object sender
                 , ErrorEventArgs eventArgs) =>
                 Error?.Invoke(eventArgs.Exception);
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <returns></returns>
+            public bool IsConnected()
+            {
+                return _webSocket.IsAlive;
+            }
         }
 
         public IWebSocket CreateWebSocket(

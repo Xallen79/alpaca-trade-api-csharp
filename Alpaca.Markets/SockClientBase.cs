@@ -232,5 +232,13 @@ namespace Alpaca.Markets
                 _webSocket.Send(textWriter.ToString());
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool IsConnected()
+        {
+            return _webSocket.IsConnected();
+        }
     }
 }

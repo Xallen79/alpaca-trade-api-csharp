@@ -12,7 +12,10 @@ namespace Alpaca.Markets
         private sealed class WebSocketWrapper : IWebSocket
         {
             private readonly WebSocket _webSocket;
-
+            public bool IsConnected()
+            {                
+                return _webSocket.State == WebSocketState.Open;
+            }
             public WebSocketWrapper(
                 Uri url)
             {
