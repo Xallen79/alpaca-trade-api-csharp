@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Alpaca.Markets
 {
@@ -15,6 +16,9 @@ namespace Alpaca.Markets
         /// <summary>
         /// Gets asset class.
         /// </summary>
+        [SuppressMessage(
+            "Naming", "CA1716:Identifiers should not match keywords",
+            Justification = "Already used by clients and creates conflict only in VB.NET")]
         AssetClass Class { get; }
 
         /// <summary>
@@ -23,7 +27,7 @@ namespace Alpaca.Markets
         Exchange Exchange { get; }
 
         /// <summary>
-        /// Gest asset name.
+        /// Gets asset name.
         /// </summary>
         String Symbol { get; }
 

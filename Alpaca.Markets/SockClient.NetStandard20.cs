@@ -15,9 +15,10 @@ namespace Alpaca.Markets
             IConfiguration configuration,
             IWebSocketFactory webSocketFactory = null)
             : this(
-                configuration["keyId"],
-                configuration["secretKey"],
-                configuration["alpacaRestApi"])
+                configuration?["keyId"],
+                configuration?["secretKey"],
+                configuration?["alpacaRestApi"],
+                webSocketFactory)
         {
         }
     }
