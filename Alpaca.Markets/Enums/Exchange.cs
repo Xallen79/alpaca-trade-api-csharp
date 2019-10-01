@@ -50,6 +50,15 @@ namespace Alpaca.Markets
         /// Archipelago Stock Exchagne (ARCA).
         /// </summary>
         [EnumMember(Value = "ARCA")]
-        Arca
+        Arca,
+
+        /// <summary>
+        ///IEX
+        /// </summary>
+        [EnumMember(Value = "IEX")]
+        Iex
+
+
+
     }
 }
