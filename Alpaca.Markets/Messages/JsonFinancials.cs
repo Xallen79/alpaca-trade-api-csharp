@@ -11,7 +11,7 @@ namespace Alpaca.Markets
         public string Status { get; set; }
         [JsonProperty(PropertyName = "results", Required = Required.Always)]
         private JsonFinancialResult[] NestedResults { get; set; }
-        public IFinancialResult[] Results => NestedResults;
+        public IEnumerable<IFinancialResult> Results => NestedResults;
 
         internal class JsonFinancialResult : IFinancialResult
         {

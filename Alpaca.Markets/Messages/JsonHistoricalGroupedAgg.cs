@@ -15,7 +15,7 @@ namespace Alpaca.Markets
         /// <summary>
         /// 
         /// </summary>
-        public sealed class JsonGroupedAgg : IGroupedAgg
+        internal sealed class JsonGroupedAgg : IGroupedAgg
         {
             /// <summary>
             /// 

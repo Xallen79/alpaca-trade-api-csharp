@@ -30,8 +30,9 @@ namespace Alpaca.Markets
         /// 
         /// </summary>
         /// <param name="symbol"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<bool> IsPrimaryShare(string symbol)
+        public async Task<bool> IsPrimaryShare(string symbol, CancellationToken cancellationToken = default)
         {
             var companyEndPoint = $"v1/meta/symbols/{symbol}/company";
             var financialEndPoint = $"v2/reference/financials/{symbol}";
@@ -44,7 +45,7 @@ namespace Alpaca.Markets
             var result = false;
             try
             {
-                var company = await getSingleObjectAsync<ICompany, JsonCompany>(_polygonHttpClient, FakeThrottler.Instance, builder);
+                var company = await getSingleObjectAsync<ICompany, JsonCompany>(_polygonHttpClient, FakeThrottler.Instance, builder, cancellationToken).ConfigureAwait(false);
                 if(
                     (company.Country.Equals("usa", StringComparison.CurrentCultureIgnoreCase) ||
                     company.Country.Equals("us", StringComparison.CurrentCultureIgnoreCase)) &&
@@ -56,11 +57,13 @@ namespace Alpaca.Markets
                         Path = financialEndPoint,
                         Query = getDefaultPolygonApiQueryBuilder()
                     };
-                    var fin = await getSingleObjectAsync<IFinancials, JsonFinancials>(_polygonHttpClient, FakeThrottler.Instance, builder);
-                    result = fin.Results.Count() > 0;
+                    var fin = await getSingleObjectAsync<IFinancials, JsonFinancials>(_polygonHttpClient, FakeThrottler.Instance, builder, cancellationToken).ConfigureAwait(false);
+                    result = fin.Results.Any();
                 }
             }
-            catch(Exception)
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (Exception)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 //Console.Error.WriteLine($"{symbol} - {e.Message}");
             }
@@ -286,25 +289,31 @@ namespace Alpaca.Markets
         /// </summary>
         /// <param name="dateFromInclusive"></param>
         /// <param name="unadjusted"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public Task<IHistoricalGroupedAgg> ListGroupedAggregatesAsync(            
             DateTime dateFromInclusive,
-            Boolean unadjusted = false)
+            Boolean unadjusted = false,
+            CancellationToken cancellationToken = default)
         {
+#pragma warning disable CA1305 // Specify IFormatProvider
             var unixFrom = dateFromInclusive.ToString("yyyy-MM-dd");
+#pragma warning restore CA1305 // Specify IFormatProvider
 
 
             var builder = new UriBuilder(_polygonHttpClient.BaseAddress)
             {
                 Path = $"/v2/aggs/grouped/locale/us/market/stocks/{unixFrom}",
                 Query = getDefaultPolygonApiQueryBuilder()
+#pragma warning disable CA1305 // Specify IFormatProvider
                     .AddParameter("unadjusted", unadjusted.ToString())
+#pragma warning restore CA1305 // Specify IFormatProvider
             };
 
             return getSingleObjectAsync
                 <IHistoricalGroupedAgg,
                     JsonHistoricalGroupedAgg>(
-                _polygonHttpClient, FakeThrottler.Instance, builder);
+                _polygonHttpClient, FakeThrottler.Instance, builder, cancellationToken);
         }
         /// <summary>
         /// Gets last trade for singe asset from Polygon REST API endpoint.
@@ -349,7 +358,7 @@ namespace Alpaca.Markets
         /// 
         /// </summary>
         /// <returns></returns>
-        public Task<ITickers> GetAllTickers()
+        public Task<ITickers> GetAllTickers(CancellationToken cancellationToken = default)
         {
             var builder = new UriBuilder(_polygonHttpClient.BaseAddress)
             {
@@ -358,7 +367,7 @@ namespace Alpaca.Markets
             };
 
             return getSingleObjectAsync<ITickers, JsonTickers>(
-                _polygonHttpClient, FakeThrottler.Instance, builder);
+                _polygonHttpClient, FakeThrottler.Instance, builder, cancellationToken);
         }
 
         /// <summary>

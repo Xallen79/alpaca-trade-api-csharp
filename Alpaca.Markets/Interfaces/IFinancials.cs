@@ -26,7 +26,7 @@ namespace Alpaca.Markets
         /// <summary>
         /// 
         /// </summary>
-        IFinancialResult[] Results { get; }
+        IEnumerable<IFinancialResult> Results { get; }
 
     }
 }
