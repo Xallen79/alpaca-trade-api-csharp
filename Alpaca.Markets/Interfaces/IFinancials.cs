@@ -13,6 +13,8 @@ namespace Alpaca.Markets
         /// 
         /// </summary>
         string Ticker { get; }
+
+
     }
     /// <summary>
     /// 

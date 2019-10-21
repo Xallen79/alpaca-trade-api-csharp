@@ -13,8 +13,8 @@
     <Product>.NET SDK for Alpaca Trade API</Product>
     <AssemblyVersion>3.3.2.0</AssemblyVersion>
     <FileVersion>3.3.2.0</FileVersion>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <NoWarn>1701;1702</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>8002;NU5125</NoWarn>
     <LangVersion>latest</LangVersion>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIconUrl>https://alpaca.markets/static/favicon-32x32.png</PackageIconUrl>
@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <WarningLevel>4</WarningLevel>
     <DefineConstants>TRACE</DefineConstants>
-    <WarningsAsErrors>NU1605</WarningsAsErrors>
+    <WarningsAsErrors></WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

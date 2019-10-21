@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Alpaca.Markets
 {
+    [SuppressMessage(
+    "Microsoft.Performance", "CA1812:Avoid uninstantiated internal classes",
+    Justification = "Object instances of this class will be created by Newtonsoft.JSON library.")]
     internal class JsonCompany : ICompany
     {
         [JsonProperty(PropertyName = "country", Required = Required.Always)]

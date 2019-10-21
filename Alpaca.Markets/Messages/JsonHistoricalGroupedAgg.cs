@@ -1,20 +1,23 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Alpaca.Markets
 {
     /// <summary>
     /// 
     /// </summary>
+    [SuppressMessage(
+        "Microsoft.Performance", "CA1812:Avoid uninstantiated internal classes",
+        Justification = "Object instances of this class will be created by Newtonsoft.JSON library.")]
     public class JsonHistoricalGroupedAgg : IHistoricalGroupedAgg
     {
-        /// <summary>
-        /// 
-        /// </summary>
+        [SuppressMessage(
+            "Microsoft.Performance", "CA1812:Avoid uninstantiated internal classes",
+            Justification = "Object instances of this class will be created by Newtonsoft.JSON library.")]
         internal sealed class JsonGroupedAgg : IGroupedAgg
         {
             /// <summary>

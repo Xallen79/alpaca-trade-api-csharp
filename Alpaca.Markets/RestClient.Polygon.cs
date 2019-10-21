@@ -47,8 +47,8 @@ namespace Alpaca.Markets
             {
                 var company = await getSingleObjectAsync<ICompany, JsonCompany>(_polygonHttpClient, FakeThrottler.Instance, builder, cancellationToken).ConfigureAwait(false);
                 if(
-                    (company.Country.Equals("usa", StringComparison.CurrentCultureIgnoreCase) ||
-                    company.Country.Equals("us", StringComparison.CurrentCultureIgnoreCase)) &&
+                    /*(company.Country.Equals("usa", StringComparison.CurrentCultureIgnoreCase) ||
+                    company.Country.Equals("us", StringComparison.CurrentCultureIgnoreCase)) &&*/
                     company.MarketCap > 0
                 )
                 {

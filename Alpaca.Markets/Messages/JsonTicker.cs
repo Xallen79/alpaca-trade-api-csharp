@@ -1,13 +1,15 @@
-﻿using Alpaca.Markets.Interfaces;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Alpaca.Markets
 {
 
+    [SuppressMessage(
+    "Microsoft.Performance", "CA1812:Avoid uninstantiated internal classes",
+    Justification = "Object instances of this class will be created by Newtonsoft.JSON library.")]
     internal sealed class JsonTickers : ITickers
     {
         [JsonProperty(PropertyName = "count", Required = Required.Always)]
@@ -20,6 +22,9 @@ namespace Alpaca.Markets
 
 
     }
+    [SuppressMessage(
+    "Microsoft.Performance", "CA1812:Avoid uninstantiated internal classes",
+    Justification = "Object instances of this class will be created by Newtonsoft.JSON library.")]
     internal sealed class JsonTicker : ITicker
     {
         internal sealed class AggBase : IAggBase
