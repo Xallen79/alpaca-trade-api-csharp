@@ -22,6 +22,10 @@ namespace Alpaca.Markets
         {
             [JsonProperty(PropertyName = "ticker", Required = Required.Always)]
             public string Ticker { get; set; }
+            [JsonProperty(PropertyName = "period", Required = Required.Always)]
+            public string Period { get; set; }
+            [JsonProperty(PropertyName = "returnOnAverageEquity", Required = Required.AllowNull)]
+            public decimal? ReturnOnAverageEquity { get; set; }
         }
     }
 }

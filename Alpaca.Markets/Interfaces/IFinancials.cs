@@ -13,7 +13,14 @@ namespace Alpaca.Markets
         /// 
         /// </summary>
         string Ticker { get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        string Period { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        decimal? ReturnOnAverageEquity { get; }
 
     }
     /// <summary>
