@@ -327,7 +327,7 @@ namespace Alpaca.Markets
         {
             var builder = new UriBuilder(_polygonHttpClient.BaseAddress)
             {
-                Path = $"v1/last/stocks/{symbol}",
+                Path = $"v2/last/trade/{symbol}",
                 Query = getDefaultPolygonApiQueryBuilder()
             };
 
@@ -347,7 +347,7 @@ namespace Alpaca.Markets
         {
             var builder = new UriBuilder(_polygonHttpClient.BaseAddress)
             {
-                Path = $"v1/last_quote/stocks/{symbol}",
+                Path = $"v2/last/quote/{symbol}",
                 Query = getDefaultPolygonApiQueryBuilder()
             };
 

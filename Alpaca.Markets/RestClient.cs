@@ -200,8 +200,18 @@ namespace Alpaca.Markets
                 }
                 catch (HttpRequestException ex)
                 {
-                    exceptions.Enqueue(ex);
-                    break;
+                    if (attempts >= throttler.MaxRetryAttempts)
+                    {
+                        exceptions.Enqueue(ex);
+                        break;
+                    }
+                    else continue;
+
+                }
+                catch (Exception)
+                {
+                    if (attempts < throttler.MaxRetryAttempts) continue;
+                    else throw;
                 }
             }
 

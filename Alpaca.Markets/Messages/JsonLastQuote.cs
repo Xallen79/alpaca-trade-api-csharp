@@ -12,36 +12,39 @@ namespace Alpaca.Markets
     {
         internal sealed class Last
         {
-            [JsonProperty(PropertyName = "bidexchange", Required = Required.Always)]
+            [JsonProperty(PropertyName = "x", Required = Required.Always)]
             public Int64 BidExchange { get; set; }
 
-            [JsonProperty(PropertyName = "askexchange", Required = Required.Always)]
+            [JsonProperty(PropertyName = "X", Required = Required.Always)]
             public Int64 AskExchange { get; set; }
 
-            [JsonProperty(PropertyName = "bidprice", Required = Required.Default)]
+            [JsonProperty(PropertyName = "p", Required = Required.Default)]
             public Decimal BidPrice { get; set; }
 
-            [JsonProperty(PropertyName = "askprice", Required = Required.Default)]
+            [JsonProperty(PropertyName = "P", Required = Required.Default)]
             public Decimal AskPrice { get; set; }
 
-            [JsonProperty(PropertyName = "bidsize", Required = Required.Default)]
+            [JsonProperty(PropertyName = "s", Required = Required.Default)]
             public Int64 BidSize { get; set; }
 
-            [JsonProperty(PropertyName = "asksize", Required = Required.Default)]
+            [JsonProperty(PropertyName = "S", Required = Required.Default)]
             public Int64 AskSize { get; set; }
 
-            [JsonProperty(PropertyName = "timestamp", Required = Required.Always)]
+            [JsonProperty(PropertyName = "t", Required = Required.Always)]
             public Int64 Timestamp { get; set; }
+
+            [JsonProperty(PropertyName="T", Required = Required.Always)]
+            public String Symbol { get; set; }
         }
 
-        [JsonProperty(PropertyName = "last", Required = Required.Always)]
+        [JsonProperty(PropertyName = "results", Required = Required.Always)]
         public Last Nested { get; set; }
 
         [JsonProperty(PropertyName = "status", Required = Required.Always)]
         public String Status { get; set; }
 
-        [JsonProperty(PropertyName = "symbol", Required = Required.Always)]
-        public String Symbol { get; set; }
+        [JsonIgnore]
+        public String Symbol => Nested.Symbol;
 
         [JsonIgnore]
         public Int64 BidExchange => Nested.BidExchange;
@@ -67,6 +70,6 @@ namespace Alpaca.Markets
         [OnDeserialized]
         internal void OnDeserializedMethod(
             StreamingContext context) =>
-            Time = DateTimeHelper.FromUnixTimeMilliseconds(Nested.Timestamp);
+            Time = DateTimeHelper.FromUnixTimeNanoseconds(Nested.Timestamp);
     }
 }

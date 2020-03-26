@@ -12,27 +12,30 @@ namespace Alpaca.Markets
     {
         internal sealed class Last
         {
-            [JsonProperty(PropertyName = "exchange", Required = Required.Always)]
+            [JsonProperty(PropertyName = "x", Required = Required.Always)]
             public Int64 Exchange { get; set; }
 
-            [JsonProperty(PropertyName = "price", Required = Required.Always)]
+            [JsonProperty(PropertyName = "p", Required = Required.Always)]
             public Decimal Price { get; set; }
 
-            [JsonProperty(PropertyName = "size", Required = Required.Always)]
+            [JsonProperty(PropertyName = "s", Required = Required.Always)]
             public Int64 Size { get; set; }
 
-            [JsonProperty(PropertyName = "timestamp", Required = Required.Always)]
+            [JsonProperty(PropertyName = "t", Required = Required.Always)]
             public Int64 Timestamp { get; set; }
+
+            [JsonProperty(PropertyName = "T", Required = Required.Always)]
+            public String Symbol { get; set; }
         }
 
-        [JsonProperty(PropertyName = "last", Required = Required.Always)]
+        [JsonProperty(PropertyName = "results", Required = Required.Always)]
         public Last Nested { get; set; }
 
         [JsonProperty(PropertyName = "status", Required = Required.Always)]
         public String Status { get; set; }
 
-        [JsonProperty(PropertyName = "symbol", Required = Required.Always)]
-        public String Symbol { get; set; }
+        [JsonIgnore]
+        public String Symbol => Nested.Symbol;
 
         [JsonIgnore]
         public Int64 Exchange => Nested.Exchange;
@@ -50,7 +53,7 @@ namespace Alpaca.Markets
         internal void OnDeserializedMethod(
             StreamingContext context)
         {
-            Time = DateTimeHelper.FromUnixTimeMilliseconds(Nested.Timestamp);
+            Time = DateTimeHelper.FromUnixTimeNanoseconds(Nested.Timestamp);
         }
     }
 }
